@@ -1,0 +1,26 @@
+---
+
+- hosts: all
+
+  tasks:
+  - name: copy deployment and service file to kube8master
+    copy: 
+      src: /root/deployment/webapp.yml
+      dest: /opt/kube8/
+  - name: deploye application 
+    command: kubectl create -f webapp.yml
+  
+  - name: copy deployment and service file to kube8master
+    copy:
+      src: /root/deployment/apache.service.yml
+      dest: /opt/kube8/
+
+  - name: create service for application
+    command: kubectl create -f apache.service.yml
+    register: serv_out
+
+  - debug:
+      msg: echo "{{serv_out}}"
+
+  
+
